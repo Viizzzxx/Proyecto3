@@ -1,48 +1,50 @@
-module Main where
+import System.IO
 
-data Unidad = Celsius | Fahrenheit | Metros | Pies
-    deriving (Show, Eq)
+-- Funciones de conversión
+celsiusAFahrenheit :: Float -> Float
+celsiusAFahrenheit c = (c * 9 / 5) + 32
 
-convertir :: Unidad -> Unidad -> Float -> Maybe Float
--- Temperatura
-convertir Celsius Fahrenheit x = Just ((x * 9 / 5) + 32)
-convertir Fahrenheit Celsius x = Just ((x - 32) * 5 / 9)
+fahrenheitACelsius :: Float -> Float
+fahrenheitACelsius f = (f - 32) * 5 / 9
 
--- Longitud
-convertir Metros Pies x = Just (x * 3.28084)
-convertir Pies Metros x = Just (x / 3.28084)
+metrosAPies :: Float -> Float
+metrosAPies m = m * 3.28084
 
--- Misma unidad
-convertir Celsius Celsius x = Just x
-convertir Fahrenheit Fahrenheit x = Just x
-convertir Metros Metros x = Just x
-convertir Pies Pies x = Just x
+piesAMetros :: Float -> Float
+piesAMetros p = p / 3.28084
 
--- Conversiones no válidas
-convertir _ _ _ = Nothing
-
+-- Menú principal
 main :: IO ()
 main = do
-    putStrLn "=== Conversor de Unidades ==="
-    putStrLn "1. Celsius a Fahrenheit"
-    putStrLn "2. Fahrenheit a Celsius"
-    putStrLn "3. Metros a Pies"
-    putStrLn "4. Pies a Metros"
-    putStrLn "Selecciona una opcion:"
-    
+    putStrLn "Seleccione una opción:"
+    putStrLn "1. Convertir Celsius a Fahrenheit"
+    putStrLn "2. Convertir Fahrenheit a Celsius"
+    putStrLn "3. Convertir Metros a Pies"
+    putStrLn "4. Convertir Pies a Metros"
+    putStrLn "5. Salir"
     opcion <- getLine
-    
-    putStrLn "Ingresa el valor a convertir:"
-    entrada <- getLine
-    let valor = read entrada :: Float
-
-    let resultado = case opcion of
-            "1" -> convertir Celsius Fahrenheit valor
-            "2" -> convertir Fahrenheit Celsius valor
-            "3" -> convertir Metros Pies valor
-            "4" -> convertir Pies Metros valor
-            _   -> Nothing
-
-    case resultado of
-        Just r  -> putStrLn ("Resultado: " ++ show r)
-        Nothing -> putStrLn "Error: conversion no valida."
+    case opcion of
+        "1" -> do
+            putStrLn "Ingrese grados Celsius:"
+            celsius <- readLn
+            putStrLn $ "Fahrenheit: " ++ show (celsiusAFahrenheit celsius)
+            main
+        "2" -> do
+            putStrLn "Ingrese grados Fahrenheit:"
+            fahrenheit <- readLn
+            putStrLn $ "Celsius: " ++ show (fahrenheitACelsius fahrenheit)
+            main
+        "3" -> do
+            putStrLn "Ingrese metros:"
+            metros <- readLn
+            putStrLn $ "Pies: " ++ show (metrosAPies metros)
+            main
+        "4" -> do
+            putStrLn "Ingrese pies:"
+            pies <- readLn
+            putStrLn $ "Metros: " ++ show (piesAMetros pies)
+            main
+        "5" -> putStrLn "Saliendo..."
+        _   -> do
+            putStrLn "Opción no válida. Intente de nuevo."
+            main
