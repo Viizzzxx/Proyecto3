@@ -1,17 +1,25 @@
 import System.IO
 
 -- Funciones de conversión
-celsiusAFahrenheit :: Float -> Float
-celsiusAFahrenheit c = (c * 9 / 5) + 32
+celsiusAFahrenheit :: Float -> Maybe Float
+celsiusAFahrenheit c
+    | c >= -273.15 = Just ((c * 9 / 5) + 32)  -- Cero absoluto en Celsius
+    | otherwise = Nothing
 
-fahrenheitACelsius :: Float -> Float
-fahrenheitACelsius f = (f - 32) * 5 / 9
+fahrenheitACelsius :: Float -> Maybe Float
+fahrenheitACelsius f
+    | f >= -459.67 = Just ((f - 32) * 5 / 9)  -- Cero absoluto en Fahrenheit
+    | otherwise = Nothing
 
-metrosAPies :: Float -> Float
-metrosAPies m = m * 3.28084
+metrosAPies :: Float -> Maybe Float
+metrosAPies m
+    | m >= 0 = Just (m * 3.28084)
+    | otherwise = Nothing
 
-piesAMetros :: Float -> Float
-piesAMetros p = p / 3.28084
+piesAMetros :: Float -> Maybe Float
+piesAMetros p
+    | p >= 0 = Just (p / 3.28084)
+    | otherwise = Nothing
 
 -- Menú principal
 main :: IO ()
@@ -27,22 +35,30 @@ main = do
         "1" -> do
             putStrLn "Ingrese grados Celsius:"
             celsius <- readLn
-            putStrLn $ "Fahrenheit: " ++ show (celsiusAFahrenheit celsius)
+            case celsiusAFahrenheit celsius of
+                Just f -> putStrLn $ "Fahrenheit: " ++ show f
+                Nothing -> putStrLn "Error: Temperatura por debajo del cero absoluto."
             main
         "2" -> do
             putStrLn "Ingrese grados Fahrenheit:"
             fahrenheit <- readLn
-            putStrLn $ "Celsius: " ++ show (fahrenheitACelsius fahrenheit)
+            case fahrenheitACelsius fahrenheit of
+                Just c -> putStrLn $ "Celsius: " ++ show c
+                Nothing -> putStrLn "Error: Temperatura por debajo del cero absoluto."
             main
         "3" -> do
             putStrLn "Ingrese metros:"
             metros <- readLn
-            putStrLn $ "Pies: " ++ show (metrosAPies metros)
+            case metrosAPies metros of
+                Just p -> putStrLn $ "Pies: " ++ show p
+                Nothing -> putStrLn "Error: Longitud negativa no permitida."
             main
         "4" -> do
             putStrLn "Ingrese pies:"
             pies <- readLn
-            putStrLn $ "Metros: " ++ show (piesAMetros pies)
+            case piesAMetros pies of
+                Just m -> putStrLn $ "Metros: " ++ show m
+                Nothing -> putStrLn "Error: Longitud negativa no permitida."
             main
         "5" -> putStrLn "Saliendo..."
         _   -> do
