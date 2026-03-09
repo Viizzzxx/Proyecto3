@@ -70,7 +70,7 @@ main = do
       putStrLn "Ingrese grados celsius:"
       ckelvin <- readLn
       case celsiusAKelvin ckelvin of
-        Just ck -> putStrLn $ "Celsius: " ++ show ck
+        Just ck -> putStrLn $ "Kelvin: " ++ show ck
         Nothing -> putStrLn "Error: Temperatura por debajo del cero absoluto"
       main
     "5" -> do
