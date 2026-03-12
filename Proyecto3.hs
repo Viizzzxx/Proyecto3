@@ -4,17 +4,17 @@ import System.IO
 -- Funciones de conversión
 celsiusAFahrenheit :: Float -> Maybe Float
 celsiusAFahrenheit c
-  | c >= -273.15 = Just ((c * 9 / 5) + 32) -- Cero absoluto en Celsius
+  | c >= -273.15 = Just ((c * 9 / 5) + 32)
   | otherwise = Nothing
 
 fahrenheitACelsius :: Float -> Maybe Float
 fahrenheitACelsius f
-  | f >= -459.67 = Just ((f - 32) * 5 / 9) -- Cero absoluto en Fahrenheit
+  | f >= -459.67 = Just ((f - 32) * 5 / 9)
   | otherwise = Nothing
 
 fahrenheitAKelvin :: Float -> Maybe Float
 fahrenheitAKelvin fk
-  | fk >= -1 = Just ((fk + 459.67) * 5 / 9)
+  | fk >= -459.67 = Just ((fk + 459.67) * 5 / 9)
   | otherwise = Nothing
 
 celsiusAKelvin :: Float -> Maybe Float
@@ -32,7 +32,6 @@ piesAMetros p
   | p >= 0 = Just (p / 3.28084)
   | otherwise = Nothing
 
--- Menú principal
 main :: IO ()
 main = do
   putStrLn "Seleccione una opción:"
